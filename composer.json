@@ -1,0 +1,28 @@
+{
+  "name": "marc1706/phpbb-text-shortener",
+  "type": "library",
+  "description": "Library for shortening post text in phpBB 3.2.x",
+  "keywords": ["PHP", "phpBB", "PhpBB", "extension", "Extensions", "shortening", "post", "bbcode", "minify"],
+  "homepage": "https://www.m-a-styles.de",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marc Alexander",
+      "email": "admin@m-a-styles.de",
+      "homepage": "https://www.m-a-styles.de",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Marc1706\\TextShortener\\": "src",
+      "Marc1706\\TextShortener\\tests\\": "tests"
+    }
+  }
+}

@@ -73,6 +73,6 @@ class Shortener
 	 */
 	protected function getRealLength($string)
 	{
-		return strlen(preg_replace('@\[([a-zA-Z0-9]+)\].+\[/\1\]@i', '', strip_tags($string)));
+		return strlen(preg_replace('@\[([a-zA-Z0-9-_]+)\].+\[/\1\]@i', '', strip_tags($string)));
 	}
 }

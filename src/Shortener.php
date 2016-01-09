@@ -16,6 +16,9 @@ class Shortener
 	/** @var string Text */
 	private $text;
 
+	/** @var array Text splitted using preg_split() */
+	private $splitText;
+
 	/** @var int Text length */
 	private $textLength = 0;
 
@@ -24,6 +27,9 @@ class Shortener
 
 	/** @var string Shortened text */
 	private $shortenedText;
+
+	/** @var array Delimiters of current text */
+	private $delimiter;
 
 	/** @todo: Needed? */
 	public function __construct()
@@ -40,10 +46,18 @@ class Shortener
 	 */
 	public function setText($text)
 	{
-		$this->text = $text;
-		$this->textLength = strlen($text);
+		// Remove surrounding text
+		preg_match('@^(<[rt][ >])((.|\s)+)(<\/[rt][ >])$@', $text, $matches);
+		$this->text = $matches[2];
+		$this->delimiter = array($matches[1], $matches[4]);
+		$this->textLength = $this->getRealLength($text);
 
-		$this->inputValid = !empty($this->text) && $this->textLength !== 0;
+		$this->inputValid = !empty($this->text) && $this->textLength !== 0 && preg_match('/^<[rt][ >]/', $text);
+
+		if ($this->inputValid)
+		{
+			$this->splitText($this->text);
+		}
 
 		return $this;
 	}
@@ -61,6 +75,14 @@ class Shortener
 			return '';
 		}
 
+		if ($length >= $this->textLength) {
+			$this->shortenedText = $this->text;
+		} else {
+			$this->buildShortenedText($length);
+		}
+
+		$this->addDelimiters();
+
 		return $this->shortenedText;
 	}
 
@@ -74,5 +96,47 @@ class Shortener
 	protected function getRealLength($string)
 	{
 		return strlen(preg_replace('@\[([a-zA-Z0-9-_]+)\].+\[/\1\]@i', '', strip_tags($string)));
+	}
+
+	/**
+	 * Split text into parts with position info
+	 *
+	 * @param string $text Text to split
+	 */
+	protected function splitText($text)
+	{
+		$this->splitText = preg_split('@([<\[]\/?[a-zA-Z0-9]+[\]>])@i', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
+	}
+
+	/**
+	 * Add delimiters to shortened text
+	 */
+	protected function addDelimiters()
+	{
+		$this->shortenedText = $this->delimiter[0] . $this->shortenedText  . ' ...' . $this->delimiter[1];
+	}
+
+	protected function buildShortenedText($targetLength)
+	{
+		$inSmiley = false;
+		$length = 0;
+		$this->shortenedText = '';
+
+		foreach ($this->splitText as $part) {
+			$curLength = $this->getRealLength($part[0]);
+
+			if (($curLength + $length) > $targetLength) {
+				$this->shortenedText .= substr($part[0], 0, $targetLength - $length);
+			} else {
+				$this->shortenedText .= $part[0];
+			}
+			$length = $this->getRealLength($this->shortenedText);
+
+
+
+			if ($length >= $targetLength) {
+				break;
+			}
+		}
 	}
 }

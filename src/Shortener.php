@@ -46,16 +46,17 @@ class Shortener
 	 */
 	public function setText($text)
 	{
+		$matches = array();
 		// Remove surrounding text
 		preg_match('@^(<[rt][ >])(.+)(<\/[rt][ >])$@s', $text, $matches);
-		$this->text = $matches[2];
-		$this->delimiter = array($matches[1], $matches[3]);
-		$this->textLength = $this->getRealLength($text);
 
-		$this->inputValid = !empty($this->text) && $this->textLength !== 0 && preg_match('/^<[rt][ >]/', $text);
+		$this->inputValid = count($matches) && !empty($matches[2]) && $this->getRealLength($matches[2]) != 0 && preg_match('/^<[rt][ >]/', $text);
 
 		if ($this->inputValid)
 		{
+			$this->text = $matches[2];
+			$this->delimiter = array($matches[1], $matches[3]);
+			$this->textLength = $this->getRealLength($text);
 			$this->splitText($this->text);
 		}
 
@@ -113,7 +114,7 @@ class Shortener
 	 */
 	protected function addDelimiters()
 	{
-		$this->shortenedText = $this->delimiter[0] . $this->shortenedText  . ' ...' . $this->delimiter[1];
+		$this->shortenedText = $this->delimiter[0] . $this->shortenedText . $this->delimiter[1];
 	}
 
 	protected function buildShortenedText($targetLength)
@@ -138,5 +139,7 @@ class Shortener
 				break;
 			}
 		}
+
+		$this->shortenedText .= ' ...';
 	}
 }

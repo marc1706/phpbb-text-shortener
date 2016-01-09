@@ -36,6 +36,8 @@ This is an example post in your phpBB3 installation.  <E>:D</E>  Everything seem
 <IMG src="https://www.phpbb.com/assets/images/images/bg_forumatic_front_page.png?v2015122401"><s>[img]</s><URL url="https://www.phpbb.com/assets/images/images/bg_forumatic_front_page.png?v2015122401">https://www.phpbb.com/assets/images/images/bg_forumatic_front_page.png?v2015122401</URL><e>[/img]</e></IMG><br/>
 <br/>
 This is an example post in your phpBB3 installation.  <E>:D</E>  Everything seems to be working. You may delete this post if you like and continue to set up your board. During the installation process your first category and your first forum are assigned an appropriate set of permissions for the predefined usergroups administrators, bots, global moderators, guests, registered users and registered COPPA users. If you also choose to delete your first category and your first forum, do not forget to assign permissions for all these usergroups for all new categories and forums you create. It is recommended to rename your first category and your first forum and copy permissions from these while creating new categories and forums. Have fun!</r>', 200, '<r>This is an example post in your phpBB3 installation. Everything seems to be working. You may delete this post if you like and continue to set up your board. During the installation process your first  ...</r>'),
+			array('nope', 300, ''),
+			array('<r>one</r>', 300, '<r>one</r>'),
 		);
 	}
 

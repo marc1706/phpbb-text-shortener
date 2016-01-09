@@ -47,9 +47,9 @@ class Shortener
 	public function setText($text)
 	{
 		// Remove surrounding text
-		preg_match('@^(<[rt][ >])((.|\s)+)(<\/[rt][ >])$@', $text, $matches);
+		preg_match('@^(<[rt][ >])(.+)(<\/[rt][ >])$@s', $text, $matches);
 		$this->text = $matches[2];
-		$this->delimiter = array($matches[1], $matches[4]);
+		$this->delimiter = array($matches[1], $matches[3]);
 		$this->textLength = $this->getRealLength($text);
 
 		$this->inputValid = !empty($this->text) && $this->textLength !== 0 && preg_match('/^<[rt][ >]/', $text);

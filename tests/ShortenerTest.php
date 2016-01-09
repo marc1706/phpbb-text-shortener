@@ -11,6 +11,8 @@
 
 namespace Marc1706\TextShortener\tests;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 class ShortenerTest extends \PHPUnit_Framework_TestCase
 {
 	/** @var \Marc1706\TextShortener\Shortener */

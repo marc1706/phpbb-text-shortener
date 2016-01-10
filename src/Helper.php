@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Text shortener for phpBB 3.2.x base class
+ * Text shortener for phpBB 3.2.x helper class
  * @package phpbb-text-shortener
  * @copyright (c) Marc Alexander <admin@m-a-styles.de>
  *

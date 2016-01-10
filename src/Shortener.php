@@ -16,6 +16,9 @@ class Shortener
 	/** @var Helper */
 	protected $helper;
 
+	/** @var TextIterator */
+	protected $textIterator;
+
 	/** @var string Text */
 	private $text;
 
@@ -34,10 +37,13 @@ class Shortener
 	/** @var array Delimiters of current text */
 	private $delimiter;
 
-	/** @todo: Needed? */
+	/**
+	 * Shortener constructor.
+	 */
 	public function __construct()
 	{
 		$this->helper = new Helper();
+		$this->textIterator = new TextIterator();
 	}
 
 	/**
@@ -49,7 +55,7 @@ class Shortener
 	 */
 	public function setText($text)
 	{
-		$matches = array();
+		$matches = [];
 		// Remove surrounding text
 		preg_match('@^(<[rt][ >])(.+)(<\/[rt][ >])$@s', $text, $matches);
 
@@ -92,26 +98,8 @@ class Shortener
 
 	protected function buildShortenedText($targetLength)
 	{
-		$inSmiley = false;
-		$length = 0;
-		$this->shortenedText = '';
-
-		foreach ($this->splitText as $part) {
-			$curLength = $this->helper->getRealLength($part[0]);
-
-			if (($curLength + $length) > $targetLength) {
-				$this->shortenedText .= substr($part[0], 0, $targetLength - $length);
-			} else {
-				$this->shortenedText .= $part[0];
-			}
-			$length = $this->helper->getRealLength($this->shortenedText);
-
-
-
-			if ($length >= $targetLength) {
-				break;
-			}
-		}
+		$this->shortenedText = $this->textIterator->setText($this->splitText)
+			->iterate($targetLength);
 
 		$this->shortenedText .= ' ...';
 	}

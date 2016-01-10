@@ -22,7 +22,7 @@ class Helper
 	 */
 	public function getRealLength($string)
 	{
-		return strlen(preg_replace('@\[([a-zA-Z0-9-_]+)\].+\[/\1\]@i', '', strip_tags($string)));
+		return strlen(preg_replace('@\[([a-zA-Z0-9-_]+)\].+\[/\1\]|\[(\/?[a-zA-Z0-9-_]+)\]@i', '', strip_tags($string)));
 	}
 
 	/**

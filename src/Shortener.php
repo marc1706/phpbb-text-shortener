@@ -101,6 +101,6 @@ class Shortener
 		$this->shortenedText = $this->textIterator->setText($this->splitText)
 			->iterate($targetLength);
 
-		$this->shortenedText .= ' ...';
+		$this->shortenedText = rtrim($this->shortenedText) . ' ...';
 	}
 }

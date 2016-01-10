@@ -13,6 +13,9 @@ namespace Marc1706\TextShortener;
 
 class Shortener
 {
+	/** @var Helper */
+	protected $helper;
+
 	/** @var string Text */
 	private $text;
 
@@ -34,7 +37,7 @@ class Shortener
 	/** @todo: Needed? */
 	public function __construct()
 	{
-
+		$this->helper = new Helper();
 	}
 
 	/**
@@ -50,14 +53,14 @@ class Shortener
 		// Remove surrounding text
 		preg_match('@^(<[rt][ >])(.+)(<\/[rt][ >])$@s', $text, $matches);
 
-		$this->inputValid = count($matches) && !empty($matches[2]) && $this->getRealLength($matches[2]) != 0 && preg_match('/^<[rt][ >]/', $text);
+		$this->inputValid = count($matches) && !empty($matches[2]) && $this->helper->getRealLength($matches[2]) != 0 && preg_match('/^<[rt][ >]/', $text);
 
 		if ($this->inputValid)
 		{
 			$this->text = $matches[2];
 			$this->delimiter = array($matches[1], $matches[3]);
-			$this->textLength = $this->getRealLength($text);
-			$this->splitText($this->text);
+			$this->textLength = $this->helper->getRealLength($text);
+			$this->splitText = $this->helper->splitText($this->text);
 		}
 
 		return $this;
@@ -82,39 +85,9 @@ class Shortener
 			$this->buildShortenedText($length);
 		}
 
-		$this->addDelimiters();
+		$this->shortenedText = $this->helper->addDelimiters($this->shortenedText, $this->delimiter);
 
 		return $this->shortenedText;
-	}
-
-	/**
-	 * Get real length of text without xml tags and BBCode
-	 *
-	 * @param $string String to check
-	 *
-	 * @return int Real string length
-	 */
-	protected function getRealLength($string)
-	{
-		return strlen(preg_replace('@\[([a-zA-Z0-9-_]+)\].+\[/\1\]@i', '', strip_tags($string)));
-	}
-
-	/**
-	 * Split text into parts with position info
-	 *
-	 * @param string $text Text to split
-	 */
-	protected function splitText($text)
-	{
-		$this->splitText = preg_split('@([<\[]\/?[a-zA-Z0-9]+[\]>])@i', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
-	}
-
-	/**
-	 * Add delimiters to shortened text
-	 */
-	protected function addDelimiters()
-	{
-		$this->shortenedText = $this->delimiter[0] . $this->shortenedText . $this->delimiter[1];
 	}
 
 	protected function buildShortenedText($targetLength)
@@ -124,14 +97,14 @@ class Shortener
 		$this->shortenedText = '';
 
 		foreach ($this->splitText as $part) {
-			$curLength = $this->getRealLength($part[0]);
+			$curLength = $this->helper->getRealLength($part[0]);
 
 			if (($curLength + $length) > $targetLength) {
 				$this->shortenedText .= substr($part[0], 0, $targetLength - $length);
 			} else {
 				$this->shortenedText .= $part[0];
 			}
-			$length = $this->getRealLength($this->shortenedText);
+			$length = $this->helper->getRealLength($this->shortenedText);
 
 
 

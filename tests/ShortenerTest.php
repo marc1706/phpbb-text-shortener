@@ -39,6 +39,7 @@ This is an example post in your phpBB3 installation.  <E>:D</E>  Everything seem
 			array('nope', 300, ''),
 			array('<r>one</r>', 300, '<r>one</r>'),
 			array('<r>test <E>:D</E></r>', 6, '<r>test ...</r>'),
+			array('<r>test <E>:D</E> and some more</r>', 11, '<r>test <E>:D</E> and ...</r>'),
 			array('<r>test with <B><s>[b]</s>some bold stuff happening<e>[/b]</e></B> plus some other stuff, too</r>', 12, '<r>test with <B><s>[b]</s>so<e>[/b]</e></B> ...</r>'),
 		);
 	}

@@ -10,12 +10,11 @@ PHP 5.4.0 or newer is required for this library to work.
 
 ### Installation
 
-Installation via packagist does not work yet. It will work soon this way:
 It is recommend to install the library using composer.
 Just add the following snippet to your composer.json:
 ```
   "require": {
-    "marc1706/phpbb-text-shortener": "1.*"
+    "marc1706/phpbb-text-shortener": "~0.1"
   },
 ```
 

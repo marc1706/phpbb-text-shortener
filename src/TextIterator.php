@@ -25,6 +25,9 @@ class TextIterator
 	/** @var bool In smiley flag */
 	protected $inSmiley = false;
 
+	/** @var bool In BBCode flag */
+	protected $inBBCode = false;
+
 	/** @var array Open tags array */
 	protected $openTags = [];
 
@@ -88,12 +91,16 @@ class TextIterator
 		if (preg_match('@([<\[][a-zA-Z0-9]+[\]>])@i', $newPart, $matches)) {
 			if ($matches[1] === '<E>') {
 				$this->inSmiley = true;
+			} else if ($matches[1] === '<s>') {
+				$this->inBBCode = true;
 			}
 
 			$this->openTags[$position + strpos($newPart, $matches[1])] = $newPart;
 		} else if (preg_match('@([<\[]\/[a-zA-Z0-9]+[\]>])@i', $newPart, $matches)) {
 			if ($matches[1] === '</E>') {
 				$this->inSmiley = false;
+			} else if ($matches[1] === '</s>') {
+				$this->inBBCode = false;
 			}
 
 			$tagsReverse = array_reverse($this->openTags, true);
@@ -109,6 +116,9 @@ class TextIterator
 			if ($this->inSmiley && $tag === '<E>') {
 				$this->shortenedText = substr($this->shortenedText, 0, strripos($this->shortenedText, '<E>'));
 				$this->inSmiley = false;
+			} else if ($this->inBBCode && $tag === '<s>') {
+				$this->shortenedText = substr($this->shortenedText, 0, striipos($this->shortenedText, '<s>'));
+				$this->inBBCode = false;
 			} else {
 				$this->shortenedText .= preg_replace(array('@(<)([a-zA-Z0-9]+)(>)@i', '@(\[)([a-zA-Z0-9]+)(\])@i'), array('$1/$2$3', '<e>$1/$2$3</e>'), $tag);
 			}

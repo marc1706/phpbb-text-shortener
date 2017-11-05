@@ -62,7 +62,12 @@ class TextIterator
 			$curLength = $this->helper->getRealLength($part[0]);
 
 			if (($curLength + $length) > $targetLength && !$this->isTag($part[0])) {
-				$newPart = substr($part[0], 0, $targetLength - $length);
+				// Do not break inside tag
+				if (preg_match('@(<[a-zA-Z0-9]+ +)@i', $part[0])) {
+					break;
+				} else {
+					$newPart = substr($part[0], 0, $targetLength - $length);
+				}
 			} else {
 				$newPart = $part[0];
 			}

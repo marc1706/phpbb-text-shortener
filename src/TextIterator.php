@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Text shortener for phpBB 3.2.x TextIterator
+ * Text shortener for phpBB 3.3.x TextIterator
  * @package phpbb-text-shortener
  * @copyright (c) Marc Alexander <admin@m-a-styles.de>
  *
@@ -46,14 +46,20 @@ class TextIterator
 	 *
 	 * @return $this Returns self for chained calls
 	 */
-	public function setText($text = [])
+	public function setText(array $text = []): TextIterator
 	{
 		$this->splitText = $text;
 
 		return $this;
 	}
 
-	public function iterate($targetLength)
+	/**
+	 * Iterate over text
+	 *
+	 * @param int $targetLength Target length
+	 * @return string Shortened text
+	 */
+	public function iterate(int $targetLength): string
 	{
 		$length = 0;
 		$this->shortenedText = '';
@@ -61,7 +67,7 @@ class TextIterator
 		foreach ($this->splitText as $part) {
 			$curLength = $this->helper->getRealLength($part[0]);
 
-			if (($curLength + $length) > $targetLength && !$this->isTag($part[0])) {
+			if (($curLength + $length) > $targetLength && $this->isTag($part[0])) {
 				// Do not break inside tag
 				if (preg_match('@(<[a-zA-Z0-9]+ +)@i', $part[0])) {
 					break;
@@ -86,14 +92,26 @@ class TextIterator
 		return $this->shortenedText;
 	}
 
-	protected function isTag($string)
+	/**
+	 * Get whether string is tag
+	 *
+	 * @param string $string
+	 * @return bool True if element is tag, false if not
+	 */
+	protected function isTag(string $string): bool
 	{
-		return preg_match('@([<\[]\/?[a-zA-Z0-9]+[\]>])@i', $string);
+		return preg_match('@([<\[]/?[a-zA-Z0-9]+[]>])@i', $string) !== false;
 	}
 
-	protected function handleTags($newPart, $position)
+	/**
+	 * Handle tags in string part
+	 *
+	 * @param string $newPart New part
+	 * @param int $position Position of part
+	 */
+	protected function handleTags(string $newPart, int $position): void
 	{
-		if (preg_match('@([<\[][a-zA-Z0-9]+[\]>])@i', $newPart, $matches)) {
+		if (preg_match('@([<\[][a-zA-Z0-9]+[]>])@i', $newPart, $matches)) {
 			if ($matches[1] === '<E>') {
 				$this->inSmiley = true;
 			} else if ($matches[1] === '<s>') {
@@ -101,7 +119,7 @@ class TextIterator
 			}
 
 			$this->openTags[$position + strpos($newPart, $matches[1])] = $newPart;
-		} else if (preg_match('@([<\[]\/[a-zA-Z0-9]+[\]>])@i', $newPart, $matches)) {
+		} else if (preg_match('@([<\[]/[a-zA-Z0-9]+[]>])@i', $newPart, $matches)) {
 			if ($matches[1] === '</E>') {
 				$this->inSmiley = false;
 			} else if ($matches[1] === '</s>') {
@@ -109,12 +127,15 @@ class TextIterator
 			}
 
 			$tagsReverse = array_reverse($this->openTags, true);
-			if ($key = array_search(preg_replace('@([<\[])\/([a-zA-Z0-9]+)([\]>])@i', '$1$2$3', $matches[1]), $tagsReverse, true)) {
+			if ($key = array_search(preg_replace('@([<\[])/([a-zA-Z0-9]+)([]>])@i', '$1$2$3', $matches[1]), $tagsReverse, true)) {
 				unset($this->openTags[$key]);
 			}
 		}
 	}
 
+	/**
+	 * Close all open tags in shortened text
+	 */
 	protected function closeOpenTags()
 	{
 		while ($tag = array_pop($this->openTags)) {
@@ -122,7 +143,7 @@ class TextIterator
 				$this->shortenedText = substr($this->shortenedText, 0, strripos($this->shortenedText, '<E>'));
 				$this->inSmiley = false;
 			} else if ($this->inBBCode && $tag === '<s>') {
-				$this->shortenedText = substr($this->shortenedText, 0, striipos($this->shortenedText, '<s>'));
+				$this->shortenedText = substr($this->shortenedText, 0, strripos($this->shortenedText, '<s>'));
 				$this->inBBCode = false;
 			} else {
 				$this->shortenedText .= preg_replace(array('@(<)([a-zA-Z0-9]+)(>)@i', '@(\[)([a-zA-Z0-9]+)(\])@i'), array('$1/$2$3', '<e>$1/$2$3</e>'), $tag);

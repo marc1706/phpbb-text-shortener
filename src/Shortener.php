@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Text shortener for phpBB 3.2.x base class
+ * Text shortener for phpBB 3.3.x base class
  * @package phpbb-text-shortener
  * @copyright (c) Marc Alexander <admin@m-a-styles.de>
  *
@@ -49,15 +49,15 @@ class Shortener
 	/**
 	 * Set text source
 	 *
-	 * @param $text
+	 * @param string $text
 	 *
 	 * @return $this
 	 */
-	public function setText($text)
+	public function setText(string $text): Shortener
 	{
 		$matches = [];
 		// Remove surrounding text
-		preg_match('@^(<[rt][ >])(.+)(<\/[rt][ >])$@s', $text, $matches);
+		preg_match('@^(<[rt][ >])(.+)(</[rt][ >])$@s', $text, $matches);
 
 		$this->inputValid = count($matches) && !empty($matches[2]) && $this->helper->getRealLength($matches[2]) != 0 && preg_match('/^<[rt][ >]/', $text);
 
@@ -75,11 +75,11 @@ class Shortener
 	/**
 	 * Shorten text to specified length
 	 *
-	 * @param $length
+	 * @param int $length
 	 *
 	 * @return string Shortened text or empty if incorrect input data was supplied
 	 */
-	public function shortenText($length)
+	public function shortenText(int $length): string
 	{
 		if (!$this->inputValid) {
 			return '';
@@ -96,7 +96,12 @@ class Shortener
 		return $this->shortenedText;
 	}
 
-	protected function buildShortenedText($targetLength)
+	/**
+	 * Build shortened text
+	 *
+	 * @param int $targetLength Target length
+	 */
+	protected function buildShortenedText(int $targetLength)
 	{
 		$this->shortenedText = $this->textIterator->setText($this->splitText)
 			->iterate($targetLength);

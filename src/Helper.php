@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Text shortener for phpBB 3.2.x helper class
+ * Text shortener for phpBB 3.3.x helper class
  * @package phpbb-text-shortener
  * @copyright (c) Marc Alexander <admin@m-a-styles.de>
  *
@@ -16,13 +16,13 @@ class Helper
 	/**
 	 * Get real length of text without xml tags and BBCode
 	 *
-	 * @param $string String to check
+	 * @param string $string String to check
 	 *
 	 * @return int Real string length
 	 */
-	public function getRealLength($string)
+	public function getRealLength(string $string): int
 	{
-		return strlen(preg_replace('@\[([a-zA-Z0-9-_=]+)\].+\[/\1\]|\[(\/?[a-zA-Z0-9-_=]+)\]@i', '', strip_tags($string)));
+		return strlen(preg_replace('@\[([a-zA-Z0-9-_=]+)].+\[/\1]|\[(/?[a-zA-Z0-9-_=]+)]@i', '', strip_tags($string)));
 	}
 
 	/**
@@ -30,11 +30,11 @@ class Helper
 	 *
 	 * @param string $text Text to split
 	 *
-	 * @return string Split text
+	 * @return array Split text
 	 */
-	public function splitText($text)
+	public function splitText(string $text): array
 	{
-		return preg_split('@([<\[]\/?[a-zA-Z0-9]+[\]>])@i', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
+		return preg_split('@([<\[]/?[a-zA-Z0-9]+[]>])@i', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Helper
 	 *
 	 * @return string Text with delimiters
 	 */
-	public function addDelimiters($text, $delimiter_ary)
+	public function addDelimiters(string $text, array $delimiter_ary): string
 	{
 		return $delimiter_ary[0] . $text . $delimiter_ary[1];
 	}

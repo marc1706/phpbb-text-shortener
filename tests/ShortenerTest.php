@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Text shortener for phpBB 3.2.x base class
+ * Text shortener for phpBB 3.3.x base class
  * @package phpbb-text-shortener
  * @copyright (c) Marc Alexander <admin@m-a-styles.de>
  *
@@ -13,12 +13,12 @@ namespace Marc1706\TextShortener\tests;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-class ShortenerTest extends \PHPUnit_Framework_TestCase
+class ShortenerTest extends \PHPUnit\Framework\TestCase
 {
 	/** @var \Marc1706\TextShortener\Shortener */
 	protected $shortener;
 
-	public function setUp()
+	public function setUp(): void
 	{
 		parent::setUp();
 

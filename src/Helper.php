@@ -50,4 +50,32 @@ class Helper
 	{
 		return $delimiter_ary[0] . $text . $delimiter_ary[1];
 	}
+
+	/**
+	 * Returns an HTML entity safe substr of the text, i.e. not cutting inside
+	 * HTML entities to prevent invalid markup. It'll opt for an equal or
+	 * greater approach to the desired length.
+	 *
+	 * @param string $text Text to return substr from
+	 * @param int $length Desired length of string
+	 * @return string Substring of text
+	 */
+	public function htmlEntitySafeSubstr(string $text, int $length): string
+	{
+		if (preg_match_all('/&(?:#(?:([0-9]+)|[Xx]([0-9A-Fa-f]+))|([A-Za-z0-9]+));/', $text, $matches))
+		{
+			foreach ($matches[0] as $match)
+			{
+				$matchStart = strpos($text, $match);
+				$matchEnd = $matchStart + strlen($match);
+				if ($length >= $matchStart && $length <= $matchEnd)
+				{
+					$length = $matchEnd;
+					break;
+				}
+			}
+		}
+
+		return substr($text, 0, $length);
+	}
 }

@@ -72,7 +72,7 @@ class TextIterator
 				if (preg_match('@(<[a-zA-Z0-9]+ +)@i', $part[0])) {
 					break;
 				} else {
-					$newPart = substr($part[0], 0, $targetLength - $length);
+					$newPart = $this->helper->htmlEntitySafeSubstr($part[0], $targetLength - $length);
 				}
 			} else {
 				$newPart = $part[0];

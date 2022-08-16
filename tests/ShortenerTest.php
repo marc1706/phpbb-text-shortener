@@ -57,6 +57,11 @@ This is an example post in your phpBB3 installation.  <E>:D</E>  Everything seem
 				201,
 				'<r><LIST><s>[list]</s>
 <LI><s>[*]</s><B><s>[b]</s><U><s>[u]</s><I><s>[i]</s>Dies ist ein Beispielbeitrag deiner phpBB3-Installation. Alles scheint zu funktionieren. Wenn du möchtest, kannst du diesen Beitrag löschen und mit der Einrichtung deines Boards fortfahren.</I></U></B></LI> <LI><s>[*]</s><B><U><I>Wä</I></U></B></LI><e>[/i]</e><e>[/u]</e><e>[/b]</e><e>[/list]</e></LIST> ...</r>'
+			),
+			array(
+				'<t>This is an example post in your phpBB3 installation. Everything seems to be working. You may delete this post if you like and continue to set up your board. During the installation process your first category and your first forum are assigned an appropriate set of permissions for the predefined usergroups administrators, bots, global moderators, guests, registered users and registered COPPA users. If you also choose to delete your first category and your first forum, do not forget to assign permissions for all these usergroups for all new categories and forums you create. It is recommended to rename your first category and your first forum and copy permissions from these while creating new categories and forums. Have fun!</t>',
+				'200',
+				'<t>This is an example post in your phpBB3 installation. Everything seems to be working. You may delete this post if you like and continue to set up your board. During the installation process your first ...</t>'
 			)
 		);
 	}

@@ -51,6 +51,13 @@ This is an example post in your phpBB3 installation.  <E>:D</E>  Everything seem
 				92,
 				'<r><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Name:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Board3 Portal<br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Autor:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Marc, nickvergessen<br/><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Beschreibung:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> ...</r>'
 			),
+			array(
+				'<r><LIST><s>[list]</s>
+<LI><s>[*]</s><B><s>[b]</s><U><s>[u]</s><I><s>[i]</s>Dies ist ein Beispielbeitrag deiner phpBB3-Installation. Alles scheint zu funktionieren. Wenn du möchtest, kannst du diesen Beitrag löschen und mit der Einrichtung deines Boards fortfahren.</I></U></B></LI> <LI><s>[*]</s><B><U><I>Während des Installationsvorgangs wurden deiner ersten Kategorie und deinem ersten Forum passende Berechtigungen für die Benutzergruppen Administratoren, Bots, globale Moderatoren, Gäste, Registrierte Benutzer und Registrierte COPPA-Benutzer zugewiesen. Wenn du dich entscheidest, auch deine erste Kategorie und dein erstes Forum zu löschen, darfst du nicht vergessen, den genannten Gruppen entsprechende Rechte für alle neuen Kategorien und Foren, die du erstellst, zuzuweisen.</I></U></B></LI> <LI><s>[*]</s><B><U><I>Es wird jedoch empfohlen, deine erste Kategorie und dein erstes Forum umzubenennen und deren Rechte zu Übernehmen, wenn neue Kategorien und Foren erstellt werden. Viel Spaß mit phpBB<e>[/i]</e></I><e>[/u]</e></U><e>[/b]</e></B>!</LI><e>[/list]</e></LIST></r>',
+				201,
+				'<r><LIST><s>[list]</s>
+<LI><s>[*]</s><B><s>[b]</s><U><s>[u]</s><I><s>[i]</s>Dies ist ein Beispielbeitrag deiner phpBB3-Installation. Alles scheint zu funktionieren. Wenn du möchtest, kannst du diesen Beitrag löschen und mit der Einrichtung deines Boards fortfahren.</I></U></B></LI> <LI><s>[*]</s><B><U><I>Wä</I></U></B></LI><e>[/i]</e><e>[/u]</e><e>[/b]</e><e>[/list]</e></LIST> ...</r>'
+			)
 		);
 	}
 
@@ -282,7 +289,9 @@ Fügt ein Portal mit diversen Modulen deinem Forum hinzu. Im Admin-Bereich kann 
 			<s>[url=http://board3.de/download/file.php?id=644]</s>Download Board3 Portal 2.1.0
 			<e>[/url]</e>
 		</URL>
-	</r>']
+	</r>'],
+		['<r><LIST><s>[list]</s>
+<LI><s>[*]</s><B><s>[b]</s><U><s>[u]</s><I><s>[i]</s>Dies ist ein Beispielbeitrag deiner phpBB3-Installation. Alles scheint zu funktionieren. Wenn du möchtest, kannst du diesen Beitrag löschen und mit der Einrichtung deines Boards fortfahren.</I></U></B></LI> <LI><s>[*]</s><B><U><I>Während des Installationsvorgangs wurden deiner ersten Kategorie und deinem ersten Forum passende Berechtigungen für die Benutzergruppen Administratoren, Bots, globale Moderatoren, Gäste, Registrierte Benutzer und Registrierte COPPA-Benutzer zugewiesen. Wenn du dich entscheidest, auch deine erste Kategorie und dein erstes Forum zu löschen, darfst du nicht vergessen, den genannten Gruppen entsprechende Rechte für alle neuen Kategorien und Foren, die du erstellst, zuzuweisen.</I></U></B></LI> <LI><s>[*]</s><B><U><I>Es wird jedoch empfohlen, deine erste Kategorie und dein erstes Forum umzubenennen und deren Rechte zu Übernehmen, wenn neue Kategorien und Foren erstellt werden. Viel Spaß mit phpBB<e>[/i]</e></I><e>[/u]</e></U><e>[/b]</e></B>!</LI><e>[/list]</e></LIST></r>'],
 		];
 	}
 
@@ -303,7 +312,9 @@ Fügt ein Portal mit diversen Modulen deinem Forum hinzu. Im Admin-Bereich kann 
 			} else {
 				$this->assertNotFalse($xml, $shortenedText);
 				$this->assertStringStartsWith('<r>', $shortenedText);
-				$this->assertStringEndsWith(' ...</r>', $shortenedText);
+				if ($shortenedText != $input) {
+					$this->assertStringEndsWith(' ...</r>', $shortenedText);
+				}
 			}
 
 		}

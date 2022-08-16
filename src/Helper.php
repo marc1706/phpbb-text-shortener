@@ -66,7 +66,7 @@ class Helper
 		{
 			foreach ($matches[0] as $match)
 			{
-				$matchStart = strpos($text, $match);
+				$matchStart = mb_strpos($text, $match);
 				$matchEnd = $matchStart + strlen($match);
 				if ($length >= $matchStart && $length <= $matchEnd)
 				{
@@ -76,6 +76,6 @@ class Helper
 			}
 		}
 
-		return substr($text, 0, $length);
+		return mb_substr($text, 0, $length);
 	}
 }

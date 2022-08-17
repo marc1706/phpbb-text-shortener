@@ -18,11 +18,15 @@ class ShortenerTest extends \PHPUnit\Framework\TestCase
 	/** @var \Marc1706\TextShortener\Shortener */
 	protected $shortener;
 
+	/** @var \Marc1706\TextShortener\Helper */
+	protected $helper;
+
 	public function setUp(): void
 	{
 		parent::setUp();
 
 		$this->shortener = new \Marc1706\TextShortener\Shortener();
+		$this->helper = new \Marc1706\TextShortener\Helper();
 	}
 
 	public function dataShorten()
@@ -49,7 +53,7 @@ This is an example post in your phpBB3 installation.  <E>:D</E>  Everything seem
 			array(
 				'<r><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Name:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Board3 Portal<br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Autor:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Marc, nickvergessen<br/><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Beschreibung:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR>:<br/>Fügt ein Portal mit diversen Modulen deinem Forum hinzu. Im Admin-Bereich kann man unter Anderem die Einstellungen ändern, die Module verschieben, neue Module hinzufügen und vieles mehr.<br/><IMG src="http://www.w3.org/html/logo/downloads/HTML5_Logo_32.png"><s>[img]</s><URL url="http://www.w3.org/html/logo/downloads/HTML5_Logo_32.png">http://www.w3.org/html/logo/downloads/HTML5_Logo_32.png</URL><e>[/img]</e></IMG><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Version:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR>: 2.1.0<br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Benötigte phpBB Version:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR>: 3.1.5+<br/><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Features:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR><LIST><s>[list]</s><LI><s>[*]</s>Verschieben, Hinzufügen, Löschen und Änderung von Modulen im Admin-Bereich</LI><LI><s>[*]</s>&lt;table&gt;-freies Layout in prosilver</LI><LI><s>[*]</s>Unbegrenzte Anzahl an "Eigenen Blöcken" - Einfach hinzufügen im Admin-Bereich</LI><LI><s>[*]</s>Responsive Design in prosilver</LI><LI><s>[*]</s>Portal auf allen Seiten (linke oder rechte Spalte können auf allen Seiten angezeigt werden)</LI><LI><s>[*]</s>...</LI><e>[/list]</e></LIST><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Screenshots:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR><br/><URL url="http://board3.de/download/file.php?id=601&mode=view"><s>[url=http://board3.de/download/file.php?id=601&mode=view]</s><IMG src="http://board3.de/download/file.php?id=601&t=1"><s>[img]</s>http://board3.de/download/file.php?id=601&t=1<e>[/img]</e></IMG><e>[/url]</e></URL><br/><URL url="http://board3.de/download/file.php?id=626&mode=view"><s>[url=http://board3.de/download/file.php?id=626&mode=view]</s><IMG src="http://board3.de/download/file.php?id=626&t=1"><s>[img]</s>http://board3.de/download/file.php?id=626&t=1<e>[/img]</e></IMG><e>[/url]</e></URL><br/><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Demo URL:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> none yet<br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>ACP Demo URL:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> <URL url="http://board3.de/acp_demo_v2.1.x/index.html"><s>[url=http://board3.de/acp_demo_v2.1.x/index.html]</s>ACP Demo<e>[/url]</e></URL><br/><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Download:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR><br/><URL url="http://board3.de/download/file.php?id=644"><s>[url=http://board3.de/download/file.php?id=644]</s>Download Board3 Portal 2.1.0<e>[/url]</e></URL></r>',
 				92,
-				'<r><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Name:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Board3 Portal<br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Autor:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Marc, nickvergessen<br/><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Beschreibung:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> ...</r>'
+				'<r><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Name:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Board3 Portal<br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Autor:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR> Marc, nickvergessen<br/><br/><COLOR color="purple"><s>[color=purple]</s><SIZE size="120"><s>[size=120]</s><B><s>[b]</s>Extension Beschreibung:<e>[/b]</e></B><e>[/size]</e></SIZE><e>[/color]</e></COLOR>:<br/>Fügt ein ...</r>'
 			),
 			array(
 				'<r><LIST><s>[list]</s>
@@ -71,8 +75,9 @@ This is an example post in your phpBB3 installation.  <E>:D</E>  Everything seem
 	 */
 	public function testShorten($input, $length, $expected)
 	{
-		$this->assertEquals($expected, $this->shortener->setText($input)
-			->shortenText($length));
+		$shortenedText = $this->shortener->setText($input)
+			->shortenText($length);
+		$this->assertEquals($expected, $shortenedText);
 	}
 
 	public function dataTestAllLengths(): array

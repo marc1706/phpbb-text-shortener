@@ -63,17 +63,15 @@ class TextIterator
 	{
 		$length = 0;
 		$this->shortenedText = '';
+		$isEnd = false;
 
 		foreach ($this->splitText as $part) {
 			$curLength = $this->helper->getRealLength($part[0]);
 
 			if (($curLength + $length) > $targetLength && $this->isTag($part[0])) {
-				// Do not break inside tag
-				if (preg_match('@(<[a-zA-Z0-9]+ +)@i', $part[0])) {
-					break;
-				} else {
-					$newPart = $this->helper->htmlEntitySafeSubstr($part[0], $targetLength - $length);
-				}
+				// Do not break inside tag unless necessary
+				$newPart = $this->helper->htmlSafeSubstr($part[0], $targetLength - $length);
+				$isEnd = true;
 			} else {
 				$newPart = $part[0];
 			}
@@ -82,7 +80,7 @@ class TextIterator
 
 			$this->handleTags($newPart, $part[1]);
 
-			if ($length >= $targetLength) {
+			if ($length >= $targetLength || $isEnd) {
 				break;
 			}
 		}

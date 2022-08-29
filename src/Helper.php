@@ -22,7 +22,7 @@ class Helper
 	 */
 	public function getRealLength(string $string): int
 	{
-		return strlen(preg_replace('@\[([a-zA-Z0-9-_=]+)]|\[([a-zA-Z0-9-_=]+)][^]]+\[/\1]|\[(/?[a-zA-Z0-9-_=]+)]@i', '', strip_tags($string)));
+		return mb_strlen(preg_replace('@\[([a-zA-Z0-9-_=]+)]|\[([a-zA-Z0-9-_=]+)][^]]+\[/\1]|\[(/?[a-zA-Z0-9-_=]+)]@i', '', strip_tags($string)));
 	}
 
 	/**
@@ -73,17 +73,27 @@ class Helper
 				if ($length >= $matchStart && $length <= $matchEnd)
 				{
 					$substring .= mb_substr($text, 0, $matchEnd);
-					break;
+					return $substring;
 				}
 				else if ($length < $matchStart)
 				{
 					$substring .= mb_substr($text, 0, $length);
-					break;
+					return $substring;
 				}
 
-				$substring .= mb_substr($text, 0, $matchEnd);
+				$cutString = mb_substr($text, 0, $matchEnd);
+				$substring .= $cutString;
 				$text = mb_substr($text, $matchEnd);
-				$length -= $matchEnd;
+				$length -= $this->getRealLength($cutString);
+			}
+
+			if ($length < mb_strlen($text))
+			{
+				$substring .= mb_substr($text, 0, $length);
+			}
+			else
+			{
+				$substring .= $text;
 			}
 		}
 		else
